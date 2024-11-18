@@ -26,6 +26,20 @@
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
 
+            <Image Source="img/Grid.png" Grid.RowSpan="3" Grid.ColumnSpan="3" Stretch="Fill"/>
+
+            <Image Source="img/blank_image.png" Grid.Row="0" Grid.Column="0" Stretch="Uniform"/>
+            <Image Source="img/blank_image.png" Grid.Row="0" Grid.Column="1" Stretch="Uniform"/>
+            <Image Source="img/blank_image.png" Grid.Row="0" Grid.Column="2" Stretch="Uniform"/>
+
+            <Image Source="img/blank_image.png" Grid.Row="1" Grid.Column="0" Stretch="Uniform"/>
+            <Image Source="img/blank_image.png" Grid.Row="1" Grid.Column="1" Stretch="Uniform"/>
+            <Image Source="img/blank_image.png" Grid.Row="1" Grid.Column="2" Stretch="Uniform"/>
+
+            <Image Source="img/blank_image.png" Grid.Row="2" Grid.Column="0" Stretch="Uniform"/>
+            <Image Source="img/blank_image.png" Grid.Row="2" Grid.Column="1" Stretch="Uniform"/>
+            <Image Source="img/blank_image.png" Grid.Row="2" Grid.Column="2" Stretch="Uniform"/>
+
             <!-- Game squares -->
             <Button Grid.Row="0" Grid.Column="0" Click="Square_Click" />
             <Button Grid.Row="0" Grid.Column="1" Click="Square_Click" />
