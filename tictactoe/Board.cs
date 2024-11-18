@@ -24,7 +24,7 @@
                     board[x, y] = Player.NONE;
                 }
             }
-            currentPlayer = Player.X; // Player X starts by default
+            currentPlayer = Player.X; 
         }
 
         public bool Select(int row, int col)
@@ -40,7 +40,7 @@
 
         public Player CheckWin()
         {
-            // Check rows and columns
+           
             for (int i = 0; i < 3; i++)
             {
                 if (board[i, 0] == board[i, 1] && board[i, 1] == board[i, 2] && board[i, 0] != Player.NONE)
@@ -49,7 +49,7 @@
                     return board[0, i];
             }
 
-            // Check diagonals
+          
             if (board[0, 0] == board[1, 1] && board[1, 1] == board[2, 2] && board[0, 0] != Player.NONE)
                 return board[0, 0];
             if (board[0, 2] == board[1, 1] && board[1, 1] == board[2, 0] && board[0, 2] != Player.NONE)
@@ -66,11 +66,11 @@
                 {
                     if (board[x, y] == Player.NONE)
                     {
-                        return false; // Found an empty square
+                        return false;
                     }
                 }
             }
-            return true; // No empty squares, board is full
+            return true; 
         }
 
         public void SetCurrentPlayer(Player player)
