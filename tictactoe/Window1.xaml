@@ -1,7 +1,7 @@
-﻿<Window x:Class="tictactoe.Window1"
+﻿<Window x:Class="TicTacToe.Window1"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Startup" Height="450" Width="800">
+        Title="Choose Player" Height="450" Width="800">
     <Grid>
         <Label Content="Choose X or O to continue (X usually plays first)" 
                HorizontalAlignment="Center" VerticalAlignment="Top" 

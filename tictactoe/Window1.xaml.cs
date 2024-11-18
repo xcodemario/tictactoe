@@ -1,6 +1,7 @@
 ﻿using System.Windows;
+using tictactoe;
 
-namespace tictactoe
+namespace TicTacToe
 {
     public partial class Window1 : Window
     {

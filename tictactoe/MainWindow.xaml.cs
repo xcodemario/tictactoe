@@ -1,100 +1,165 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using tictactoe;
 
-namespace tictactoe
+namespace TicTacToe
 {
     public partial class MainWindow : Window
     {
-        private Board gameBoard;
+        private Player[,] board;
+        private Player currentPlayer;
+        private bool gameEnded;
+        private int gamesPlayed;
+        private int gamesWonX;
+        private int gamesWonO;
 
         public MainWindow(Player startingPlayer)
         {
             InitializeComponent();
-            InitializeGame(startingPlayer);
+            board = new Player[3, 3];
+            currentPlayer = startingPlayer;
+            gameEnded = false;
+            gamesPlayed = 0;
+            gamesWonX = 0;
+            gamesWonO = 0;
+            UpdateBoardUI();
+            UpdateNotificationArea();
         }
 
-        private void InitializeGame(Player startingPlayer)
+        private void UpdateBoardUI()
         {
-            gameBoard = new Board();
-            gameBoard.SetCurrentPlayer(startingPlayer);
-            UpdateNotification($"Turn: Player {gameBoard.CurrentPlayer}");
-
-            // Reset grid buttons
-            foreach (UIElement element in GameGrid.Children)
+            for (int row = 0; row < 3; row++)
             {
-                if (element is Button button)
+                for (int col = 0; col < 3; col++)
                 {
-                    button.Content = null;
-                    button.IsEnabled = true;
+                    var button = (Button)GameBoardGrid.Children[row * 3 + col];
+                    if (board[row, col] == Player.X)
+                    {
+                        button.Content = new Image
+                        {
+                            Source = new BitmapImage(new Uri("img/tic-tac-toe_x.png", UriKind.Relative))
+                        };
+                    }
+                    else if (board[row, col] == Player.O)
+                    {
+                        button.Content = new Image
+                        {
+                            Source = new BitmapImage(new Uri("img/tic-tac-toe_o.png", UriKind.Relative))
+                        };
+                    }
+                    else
+                    {
+                        button.Content = null;
+                    }
+
+                    button.IsEnabled = !gameEnded;
                 }
             }
         }
 
-        private void Square_Click(object sender, RoutedEventArgs e)
+        private void UpdateNotificationArea()
         {
-            Button clickedButton = sender as Button;
-            int row = Grid.GetRow(clickedButton);
-            int col = Grid.GetColumn(clickedButton);
+            GamesPlayedLabel.Content = $"Games Played: {gamesPlayed}| Games Won: {gamesWonX + gamesWonO}";
+            WinRatioLabel.Content = gamesPlayed > 0
+                ? $"Win Ratio: {(float)(gamesWonX + gamesWonO) / gamesPlayed * 100:F2}%" //found this in stack overflow
+                : "Win Ratio: 0%";
+            TurnLabel.Content = $"Turn: Player {(currentPlayer == Player.X ? "X" : "O")}";
+        }
 
-            if (gameBoard.Select(row, col))
+        private void Cell_Click(object sender, RoutedEventArgs e)
+        {
+            if (gameEnded)
+                return;
+
+            var button = sender as Button;
+            int row = Grid.GetRow(button);
+            int col = Grid.GetColumn(button);
+
+            if (board[row, col] == Player.None)
             {
-                clickedButton.Content = gameBoard.CurrentPlayer == Player.X ? "O" : "X";
-                clickedButton.IsEnabled = false;
+                board[row, col] = currentPlayer;
+                UpdateBoardUI();
 
-                Player winner = gameBoard.CheckWin();
-                if (winner != Player.NONE)
+                if (CheckForWinner())
                 {
-                    EndGame(winner);
+                    WinnerLabel.Content = $"{currentPlayer} wins!";
+                    gameEnded = true;
+                    gamesPlayed++;
+                    if (currentPlayer == Player.X)
+                        gamesWonX++;
+                    else
+                        gamesWonO++;
+                    UpdateNotificationArea();
+                    RematchButton.Visibility = Visibility.Visible;
+                    return;
                 }
-                else if (gameBoard.IsBoardFull())
+                else if (CheckForDraw())
                 {
-                    EndGame(Player.NONE); // Draw
+                    WinnerLabel.Content = "It's a draw!";
+                    gameEnded = true;
+                    gamesPlayed++;
+                    UpdateNotificationArea();
+                    RematchButton.Visibility = Visibility.Visible;
+                    return;
                 }
                 else
                 {
-                    UpdateNotification($"Turn: Player {gameBoard.CurrentPlayer}");
+                    if (currentPlayer == Player.X)
+                    {
+                        currentPlayer = Player.O;
+                    }
+                    else
+                    {
+                        currentPlayer = Player.X;
+                    }
                 }
+
+                UpdateNotificationArea();
             }
         }
 
-        private void Reset_Click(object sender, RoutedEventArgs e)
+
+        private bool CheckForWinner()
         {
-            gameBoard.Reset();
-            foreach (UIElement element in GameGrid.Children)
+            for (int i = 0; i < 3; i++)
             {
-                if (element is Button button)
-                {
-                    button.Content = null;
-                    button.IsEnabled = true;
-                }
+                if (board[i, 0] == currentPlayer && board[i, 1] == currentPlayer && board[i, 2] == currentPlayer)
+                    return true;
+                if (board[0, i] == currentPlayer && board[1, i] == currentPlayer && board[2, i] == currentPlayer)
+                    return true;
             }
-            UpdateNotification($"Turn: Player {gameBoard.CurrentPlayer}");
+
+            if (board[0, 0] == currentPlayer && board[1, 1] == currentPlayer && board[2, 2] == currentPlayer)
+                return true;
+            if (board[0, 2] == currentPlayer && board[1, 1] == currentPlayer && board[2, 0] == currentPlayer)
+                return true;
+
+            return false;
         }
 
-        private void UpdateNotification(string message)
+        private bool CheckForDraw()
         {
-            NotificationArea.Text = message;
+            foreach (var cell in board)
+            {
+                if (cell == Player.None)
+                    return false;
+            }
+            return true;
         }
 
-        private void EndGame(Player winner)
+        private void RematchButton_Click(object sender, RoutedEventArgs e)
         {
-            foreach (UIElement element in GameGrid.Children)
-            {
-                if (element is Button button)
-                {
-                    button.IsEnabled = false;
-                }
-            }
-
-            if (winner == Player.NONE)
-            {
-                UpdateNotification("It's a draw!");
-            }
-            else
-            {
-                UpdateNotification($"Player {winner} wins!");
-            }
+            board = new Player[3, 3];
+            currentPlayer = Player.X; 
+            gameEnded = false;
+            WinnerLabel.Content = "";
+            UpdateBoardUI();
+            UpdateNotificationArea();
+            RematchButton.Visibility = Visibility.Collapsed;
         }
     }
+
+   
 }

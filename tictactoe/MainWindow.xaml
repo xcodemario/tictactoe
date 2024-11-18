@@ -1,55 +1,39 @@
-﻿<Window x:Class="tictactoe.MainWindow"
+﻿<Window x:Class="TicTacToe.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Tic Tac Toe" Height="450" Width="450">
-    <DockPanel>
-        <!-- Notification area at the top -->
-        <TextBlock Name="NotificationArea" DockPanel.Dock="Top" 
-                   HorizontalAlignment="Center" FontSize="16" Margin="10">
-            Turn: Player X
-        </TextBlock>
+        Title="Tic Tac Toe" Height="450" Width="800">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
 
-        <!-- Reset Button at the bottom -->
-        <Button Content="Reset" Click="Reset_Click" DockPanel.Dock="Bottom" 
-                HorizontalAlignment="Center" Margin="10" />
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
 
-        <!-- Game grid -->
-        <Grid Name="GameGrid" Margin="10">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="*" />
-                <RowDefinition Height="*" />
-                <RowDefinition Height="*" />
-            </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="*" />
-            </Grid.ColumnDefinitions>
+        <UniformGrid Name="GameBoardGrid" Grid.Row="0" Grid.ColumnSpan="3" Rows="3" Columns="3">
+            <Button Click="Cell_Click" Grid.Row="0" Grid.Column="0" />
+            <Button Click="Cell_Click" Grid.Row="0" Grid.Column="1" />
+            <Button Click="Cell_Click" Grid.Row="0" Grid.Column="2" />
+            <Button Click="Cell_Click" Grid.Row="1" Grid.Column="0" />
+            <Button Click="Cell_Click" Grid.Row="1" Grid.Column="1" />
+            <Button Click="Cell_Click" Grid.Row="1" Grid.Column="2" />
+            <Button Click="Cell_Click" Grid.Row="2" Grid.Column="0" />
+            <Button Click="Cell_Click" Grid.Row="2" Grid.Column="1" />
+            <Button Click="Cell_Click" Grid.Row="2" Grid.Column="2" />
+        </UniformGrid>
 
-            <Image Source="img/Grid.png" Grid.RowSpan="3" Grid.ColumnSpan="3" Stretch="Fill"/>
+        <Label Name="WinnerLabel" Content="" Grid.Row="1" Grid.Column="2" HorizontalAlignment="Right" VerticalAlignment="Bottom" FontSize="20" Margin="10,10,10,10" />
 
-            <Image Source="img/blank_image.png" Grid.Row="0" Grid.Column="0" Stretch="Uniform"/>
-            <Image Source="img/blank_image.png" Grid.Row="0" Grid.Column="1" Stretch="Uniform"/>
-            <Image Source="img/blank_image.png" Grid.Row="0" Grid.Column="2" Stretch="Uniform"/>
+        <StackPanel Grid.Row="2" Grid.ColumnSpan="3" Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10">
+            <Label x:Name="GamesPlayedLabel" Content="Games Played: 0    |    Games Won: 0" HorizontalAlignment="Center"/>
+            <Label x:Name="WinRatioLabel" Content="Win Ratio: 0%" HorizontalAlignment="Center"/>
+            <Label x:Name="TurnLabel" Content="Turn: Player X" HorizontalAlignment="Center"/>
+        </StackPanel>
 
-            <Image Source="img/blank_image.png" Grid.Row="1" Grid.Column="0" Stretch="Uniform"/>
-            <Image Source="img/blank_image.png" Grid.Row="1" Grid.Column="1" Stretch="Uniform"/>
-            <Image Source="img/blank_image.png" Grid.Row="1" Grid.Column="2" Stretch="Uniform"/>
-
-            <Image Source="img/blank_image.png" Grid.Row="2" Grid.Column="0" Stretch="Uniform"/>
-            <Image Source="img/blank_image.png" Grid.Row="2" Grid.Column="1" Stretch="Uniform"/>
-            <Image Source="img/blank_image.png" Grid.Row="2" Grid.Column="2" Stretch="Uniform"/>
-
-            <!-- Game squares -->
-            <Button Grid.Row="0" Grid.Column="0" Click="Square_Click" />
-            <Button Grid.Row="0" Grid.Column="1" Click="Square_Click" />
-            <Button Grid.Row="0" Grid.Column="2" Click="Square_Click" />
-            <Button Grid.Row="1" Grid.Column="0" Click="Square_Click" />
-            <Button Grid.Row="1" Grid.Column="1" Click="Square_Click" />
-            <Button Grid.Row="1" Grid.Column="2" Click="Square_Click" />
-            <Button Grid.Row="2" Grid.Column="0" Click="Square_Click" />
-            <Button Grid.Row="2" Grid.Column="1" Click="Square_Click" />
-            <Button Grid.Row="2" Grid.Column="2" Click="Square_Click" />
-        </Grid>
-    </DockPanel>
+        <Button x:Name="RematchButton" Content="Rematch" Grid.Row="2" Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="10" Click="RematchButton_Click" Visibility="Collapsed"/>
+    </Grid>
 </Window>

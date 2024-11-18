@@ -1,90 +1,54 @@
-﻿namespace tictactoe
+﻿using tictactoe;
+
+namespace TicTacToe
 {
     public class Board
     {
-        private Player[,] board = new Player[3, 3];
-        private Player currentPlayer;
-
-        public Player CurrentPlayer
-        {
-            get { return currentPlayer; }
-        }
+        public Player[,] BoardArray { get; private set; }
 
         public Board()
         {
-            Reset();
+            BoardArray = new Player[3, 3];
         }
 
-        public void Reset()
+        public bool Select(int row, int col, Player currentPlayer)
         {
-            for (int x = 0; x < 3; x++)
+            if (BoardArray[row, col] == Player.None)
             {
-                for (int y = 0; y < 3; y++)
-                {
-                    board[x, y] = Player.NONE;
-                }
-            }
-            currentPlayer = Player.X; 
-        }
-
-        public bool Select(int row, int col)
-        {
-            if (board[row, col] == Player.NONE)
-            {
-                board[row, col] = currentPlayer;
-
-                if (currentPlayer == Player.X)
-                {
-                    currentPlayer = Player.O;
-                }
-                else
-                {
-                    currentPlayer = Player.X;
-                }
-
+                BoardArray[row, col] = currentPlayer;
                 return true;
             }
             return false;
         }
 
-        public Player CheckWin()
+        public bool CheckWinner(Player player)
         {
-           
             for (int i = 0; i < 3; i++)
             {
-                if (board[i, 0] == board[i, 1] && board[i, 1] == board[i, 2] && board[i, 0] != Player.NONE)
-                    return board[i, 0];
-                if (board[0, i] == board[1, i] && board[1, i] == board[2, i] && board[0, i] != Player.NONE)
-                    return board[0, i];
+                if (BoardArray[i, 0] == player && BoardArray[i, 1] == player && BoardArray[i, 2] == player)
+                    return true;
+
+                if (BoardArray[0, i] == player && BoardArray[1, i] == player && BoardArray[2, i] == player)
+                    return true;
             }
 
-          
-            if (board[0, 0] == board[1, 1] && board[1, 1] == board[2, 2] && board[0, 0] != Player.NONE)
-                return board[0, 0];
-            if (board[0, 2] == board[1, 1] && board[1, 1] == board[2, 0] && board[0, 2] != Player.NONE)
-                return board[0, 2];
+            if (BoardArray[0, 0] == player && BoardArray[1, 1] == player && BoardArray[2, 2] == player)
+                return true;
 
-            return Player.NONE;
+            if (BoardArray[0, 2] == player && BoardArray[1, 1] == player && BoardArray[2, 0] == player)
+                return true;
+
+            return false;
         }
 
         public bool IsBoardFull()
         {
-            for (int x = 0; x < 3; x++)
+            foreach (var cell in BoardArray)
             {
-                for (int y = 0; y < 3; y++)
-                {
-                    if (board[x, y] == Player.NONE)
-                    {
-                        return false;
-                    }
-                }
+                if (cell == Player.None)
+                    return false;
             }
-            return true; 
-        }
-
-        public void SetCurrentPlayer(Player player)
-        {
-            currentPlayer = player;
+            return true;
         }
     }
 }
