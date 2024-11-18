@@ -1,5 +1,5 @@
 ﻿using tictactoe;
-
+using System.Windows;
 namespace TicTacToe
 {
     public class Board
@@ -13,7 +13,7 @@ namespace TicTacToe
 
         public bool Select(int row, int col, Player currentPlayer)
         {
-            if (BoardArray[row, col] == Player.None)
+            if (BoardArray[row, col] == Player.NONE)
             {
                 BoardArray[row, col] = currentPlayer;
                 return true;
@@ -45,7 +45,7 @@ namespace TicTacToe
         {
             foreach (var cell in BoardArray)
             {
-                if (cell == Player.None)
+                if (cell == Player.NONE)
                     return false;
             }
             return true;

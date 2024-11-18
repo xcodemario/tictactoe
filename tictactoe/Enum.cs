@@ -2,8 +2,8 @@
 {
     public enum Player
     {
-        None,
-        X,
-        O
+        NONE =0,
+        X =1,
+        O =2
     }
 }

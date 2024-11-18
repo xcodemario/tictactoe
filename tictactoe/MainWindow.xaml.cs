@@ -77,7 +77,7 @@ namespace TicTacToe
             int row = Grid.GetRow(button);
             int col = Grid.GetColumn(button);
 
-            if (board[row, col] == Player.None)
+            if (board[row, col] == Player.NONE)
             {
                 board[row, col] = currentPlayer;
                 UpdateBoardUI();
@@ -143,7 +143,7 @@ namespace TicTacToe
         {
             foreach (var cell in board)
             {
-                if (cell == Player.None)
+                if (cell == Player.NONE)
                     return false;
             }
             return true;
