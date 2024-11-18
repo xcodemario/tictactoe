@@ -32,7 +32,16 @@
             if (board[row, col] == Player.NONE)
             {
                 board[row, col] = currentPlayer;
-                currentPlayer = currentPlayer == Player.X ? Player.O : Player.X;
+
+                if (currentPlayer == Player.X)
+                {
+                    currentPlayer = Player.O;
+                }
+                else
+                {
+                    currentPlayer = Player.X;
+                }
+
                 return true;
             }
             return false;
